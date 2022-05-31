@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
-<suite name="Tests" parallel="tests" thread-count="3">
-    <test name="Chrome_Tests" parallel="classes" thread-count="3">
+<suite name="Parallel tests" parallel="tests" thread-count="9">
+    <test name="SalesFunnelTestForChrome">
         <parameter name="browser" value="Chrome"/>
         <classes>
             <class name="SalesFunnelTest"/>
         </classes>
     </test>
 
-    <test name="FireFox_Tests" parallel="classes" thread-count="3">
+    <test name="SalesFunnelTestForFF">
         <parameter name="browser" value="FireFox"/>
         <classes>
             <class name="SalesFunnelTest"/>
         </classes>
     </test>
 
-    <test name="Edge_Tests" parallel="classes" thread-count="3">
+    <test name="SalesFunnelTestForEdge">
         <parameter name="browser" value="Edge"/>
         <classes>
             <class name="SalesFunnelTest"/>

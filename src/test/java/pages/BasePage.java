@@ -11,7 +11,7 @@ import java.time.Duration;
 
 
 abstract class BasePage {
-    WebDriver driver;
+    protected WebDriver driver;
 
     public BasePage(WebDriver driver) {
         this.driver = driver;
@@ -19,7 +19,8 @@ abstract class BasePage {
     }
 
     public void waitForVisibilityOf(WebElement webElement) {
-        new WebDriverWait(driver, Duration.ofMillis(TimeOuts.DEFAULT_TIMEOUT_IN_SECONDS.getTimeOutValue())).until(ExpectedConditions.visibilityOf(webElement));
+        new WebDriverWait(driver, Duration.ofSeconds(TimeOuts.DEFAULT_TIMEOUT_IN_SECONDS.
+                getTimeOutValue())).until(ExpectedConditions.visibilityOf(webElement));
     }
 
     public void sendKeys(WebElement field, String text) {
