@@ -14,6 +14,7 @@ public class SelectPreconditionPage extends BasePage {
     }
 
     public void submit() {
+        waitForVisibilityOf(submitButton);
         submitButton.click();
     }
 }

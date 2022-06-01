@@ -80,11 +80,13 @@ public class ShadowDomUtils {
             }
         };
         try {
-            Thread.sleep(1000);
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(30));
+            Thread.sleep(2000);
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(90));
             wait.until(expectation);
         } catch (Throwable error) {
         }
+        driver.manage().timeouts().implicitlyWait(
+                Duration.ofSeconds(TimeOuts.DEFAULT_TIMEOUT_IN_SECONDS.getTimeOutValue()));
         driver.executeScript(getInnerEl, shadowRoot);
     }
 

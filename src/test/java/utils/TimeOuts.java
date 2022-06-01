@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 public enum TimeOuts {
-    DEFAULT_TIMEOUT_IN_SECONDS(10);
+    DEFAULT_TIMEOUT_IN_SECONDS(15);
 
     @Getter
     private long timeOutValue;

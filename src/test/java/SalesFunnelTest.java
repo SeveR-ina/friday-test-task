@@ -1,25 +1,13 @@
-import org.openqa.selenium.*;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import org.testng.annotations.BeforeTest;
 import pages.*;
 import testData.Car;
-import utils.ShadowDomUtils;
-import utils.TimeOuts;
-
-import java.time.Duration;
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.testng.Assert.assertNotNull;
 
 @Test
-public class SalesFunnelTest extends BasicTest {
-
-    SelectVehiclePage vehiclePage;
-
-    SelectPreconditionPage preconditionPage;
+public class SalesFunnelTest extends SalesFunnelBaseTest {
 
     @BeforeTest
     public void doBeforeTest() {
@@ -45,19 +33,9 @@ public class SalesFunnelTest extends BasicTest {
 
     @Test(dataProvider = "createVWCars")
     public void checkSalesFunnelWithVWCars(Car car) {
-        preconditionPage.submit();
+        openCarList();
 
-        SelectRegisteredOwnerPage registeredOwnerPage = new SelectRegisteredOwnerPage(driver);
-        registeredOwnerPage.submit();
-
-        vehiclePage = new SelectVehiclePage(driver);
-        vehiclePage.openCarList();
-        driver.manage().timeouts().implicitlyWait(
-                Duration.ofSeconds(TimeOuts.DEFAULT_TIMEOUT_IN_SECONDS.getTimeOutValue()));
-        vehiclePage.selectBrand(car.getBrand());
-
-        SelectModelPage modelPage = new SelectModelPage(driver);
-        modelPage.selectModel(car.getModel());
+        selectBrandAndModel(car);
 
         SelectBodyTypePage bodyTypePage = new SelectBodyTypePage(driver);
         bodyTypePage.selectShape(car.getShape());
@@ -65,7 +43,62 @@ public class SalesFunnelTest extends BasicTest {
         SelectFuelTypePage fuelTypePage = new SelectFuelTypePage(driver);
         fuelTypePage.selectFuel(car.getFuel());
 
-        if (!car.getModel().equals("Passat")) {
+        selectEP(car, "Passat");
+
+        SelectEnginePage enginePage = new SelectEnginePage(driver);
+        Assert.assertEquals(enginePage.getHsnTsnText(), car.getTsnHsn(), "Actual HSN/TSN != Expected one");
+        enginePage.selectHsnTsn(car.getTsnHsn());
+
+        enterRegDate(car);
+
+        Assert.assertEquals(driver.getCurrentUrl(),
+                testProperties.getProperty("birthDateURL"), "Actual page url != birth date url");
+    }
+
+    @Test(dataProvider = "createBMWCars")
+    public void checkSalesFunnelWithBMWCars(Car car) {
+        openCarList();
+
+        selectBrandAndModel(car);
+
+        if (car.getModel().equals("1er")) {
+            SelectBodyTypePage bodyTypePage = new SelectBodyTypePage(driver);
+            bodyTypePage.selectShape(car.getShape());
+        }
+
+        SelectFuelTypePage fuelTypePage = new SelectFuelTypePage(driver);
+        fuelTypePage.selectFuel(car.getFuel());
+
+        selectEP(car, "X1");
+
+        SelectEnginePage enginePage = new SelectEnginePage(driver);
+        Assert.assertEquals(enginePage.getHsnTsnText(), car.getTsnHsn(), "Actual HSN/TSN != Expected one");
+        enginePage.selectHsnTsn(car.getTsnHsn());
+
+        enterRegDate(car);
+
+        Assert.assertEquals(driver.getCurrentUrl(),
+                testProperties.getProperty("birthDateURL"), "Actual page url != birth date url");
+    }
+
+    @Test(dataProvider = "createOpelCars")
+    public void checkSalesFunnelWithOpelCars(Car car) {
+
+        openCarList();
+
+        selectBrandAndModel(car);
+
+        if (car.getModel().equals("Insignia")) {
+            SelectBodyTypePage bodyTypePage = new SelectBodyTypePage(driver);
+            bodyTypePage.selectShape(car.getShape());
+        }
+
+        if (!car.getModel().equals("Corsa")) {
+            SelectFuelTypePage fuelTypePage = new SelectFuelTypePage(driver);
+            fuelTypePage.selectFuel(car.getFuel());
+        }
+
+        if (car.getModel().equals("Meriva")) {
             SelectEnginePowerPage enginePowerPage = new SelectEnginePowerPage(driver);
             enginePowerPage.selectEP(car.getPs());
         }
@@ -74,11 +107,74 @@ public class SalesFunnelTest extends BasicTest {
         Assert.assertEquals(enginePage.getHsnTsnText(), car.getTsnHsn(), "Actual HSN/TSN != Expected one");
         enginePage.selectHsnTsn(car.getTsnHsn());
 
-        EnterRegistrationDatePage registrationDatePage = new EnterRegistrationDatePage(driver);
-        registrationDatePage.fillInInput(car.getRegDate());
-        registrationDatePage.submit();
+        enterRegDate(car);
 
-        Assert.assertEquals(driver.getCurrentUrl(), testProperties.getProperty("birthDateURL"), "Actual page url != birth date url");
+        Assert.assertEquals(driver.getCurrentUrl(),
+                testProperties.getProperty("birthDateURL"), "Actual page url != birth date url");
+    }
+
+    @DataProvider
+    public Object[][] createOpelCars() {
+
+        Car corsa = Car.builder()
+                .brand("OPEL")
+                .model("Corsa")
+                .tsnHsn(opelProperties.getProperty("corsaFinalResult"))
+                .regDate(testProperties.getProperty("firstRegistration"))
+                .build();
+
+        Car insignia = Car.builder()
+                .brand("OPEL")
+                .model("Insignia")
+                .shape(opelProperties.getProperty("insigniaShape"))
+                .fuel(opelProperties.getProperty("insigniaFuel"))
+                .tsnHsn(opelProperties.getProperty("insigniaFinalResult"))
+                .regDate(testProperties.getProperty("firstRegistration"))
+                .build();
+
+        Car meriva = Car.builder()
+                .brand("OPEL")
+                .model("Meriva")
+                .fuel(testProperties.getProperty("defaultFuel"))
+                .ps(opelProperties.getProperty("merivaPs"))
+                .tsnHsn(opelProperties.getProperty("merivaFinalResult"))
+                .regDate(testProperties.getProperty("firstRegistration"))
+                .build();
+
+        return new Object[][]{{corsa}, {insignia}, {meriva}};
+    }
+
+    @DataProvider
+    public Object[][] createBMWCars() {
+
+        Car x1 = Car.builder()
+                .brand("BMW")
+                .model("X1")
+                .fuel(bmwProperties.getProperty("x1Fuel"))
+                .tsnHsn(bmwProperties.getProperty("bmwFinalResult"))
+                .regDate(testProperties.getProperty("firstRegistration"))
+                .build();
+
+        Car x3 = Car.builder()
+                .brand("BMW")
+                .model("X3")
+                .fuel(testProperties.getProperty("defaultFuel"))
+                .ps(bmwProperties.getProperty("x3Ps"))
+                .tsnHsn(bmwProperties.getProperty("x3FinalResult"))
+                .regDate(testProperties.getProperty("firstRegistration"))
+                .build();
+
+        Car oneEr = Car.builder()
+                .brand("BMW")
+                .model("1er")
+                .shape(testProperties.getProperty("defaultShape"))
+                .fuel(testProperties.getProperty("defaultFuel"))
+                .ps(bmwProperties.getProperty("oneErPs"))
+                .tsnHsn(bmwProperties.getProperty("oneErFinalResult"))
+                .regDate(testProperties.getProperty("firstRegistration"))
+                .build();
+
+        return new Object[][]{{x1}, {x3}, {oneEr}};
     }
 
     @DataProvider
@@ -114,13 +210,5 @@ public class SalesFunnelTest extends BasicTest {
                 .build();
 
         return new Object[][]{{polo}, {golf}, {passat}};
-    }
-
-    private void acceptAllCookies() {
-        WebElement parentShadowElement = driver.findElement(By.id("usercentrics-root"));
-        Map<String, Object> params = new HashMap<>();
-        params.put("parentElement", parentShadowElement);
-        params.put("innerSelector", "button.sc-gsDKAQ.hWjjep");
-        ShadowDomUtils.clickElementShadowDOM(((RemoteWebDriver) driver), params);
     }
 }
