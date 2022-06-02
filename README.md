@@ -1,7 +1,16 @@
 Java test framework with Java 11 + TestNG + PageObject + Lombok + Maven
 
-Java class with Tests and Data provider - SalesFunnelTest.class
+Test classes :
 
-linear tests - linearTests.xml
+- SalesFunnelWithCarsTest.class
+- FunnelFlowBeforeCarsTest.class
 
-parallel tests - parallelTests.xml
+Linear tests :
+
+- linearTests.xml
+- linearHeadlessTests.xml
+
+Parallel tests :
+
+- parallelTests.xml - not stable 
+- parallelHeadlessTests.xml - works better

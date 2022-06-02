@@ -1,28 +1,12 @@
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import pages.*;
 import testData.Car;
-import utils.ShadowDomUtils;
 import utils.TimeOuts;
 
 import java.time.Duration;
-import java.util.HashMap;
-import java.util.Map;
 
 public class SalesFunnelBaseTest extends BasicTest {
 
     protected SelectVehiclePage vehiclePage;
-
-    protected SelectPreconditionPage preconditionPage;
-
-    protected void acceptAllCookies() {
-        WebElement parentShadowElement = driver.findElement(By.id("usercentrics-root"));
-        Map<String, Object> params = new HashMap<>();
-        params.put("parentElement", parentShadowElement);
-        params.put("innerSelector", "button.sc-gsDKAQ.hWjjep");
-        ShadowDomUtils.clickElementShadowDOM(((RemoteWebDriver) driver), params);
-    }
 
     protected void openCarList() {
         driver.manage().timeouts().implicitlyWait(

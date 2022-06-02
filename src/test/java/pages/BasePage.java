@@ -22,10 +22,4 @@ abstract class BasePage {
         new WebDriverWait(driver, Duration.ofSeconds(TimeOuts.DEFAULT_TIMEOUT_IN_SECONDS.
                 getTimeOutValue())).until(ExpectedConditions.visibilityOf(webElement));
     }
-
-    public void sendKeys(WebElement field, String text) {
-        field.click();
-        field.clear();
-        field.sendKeys(text);
-    }
 }

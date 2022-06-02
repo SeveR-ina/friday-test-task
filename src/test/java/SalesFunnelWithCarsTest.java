@@ -7,18 +7,19 @@ import testData.Car;
 import static org.testng.Assert.assertNotNull;
 
 @Test
-public class SalesFunnelTest extends SalesFunnelBaseTest {
+public class SalesFunnelWithCarsTest extends SalesFunnelBaseTest {
 
     @BeforeTest
     public void doBeforeTest() {
         setProperties();
+        System.out.println("fff");
         loadPropertiesFromFile();
     }
 
-    @Parameters("browser")
+    @Parameters({"browser", "headless"})
     @BeforeMethod
-    public void doBeforeMethod(String browser) {
-        doPreparationsFor(browser);
+    public void doBeforeMethod(String browser, boolean headless) {
+        doPreparationsFor(browser, headless);
 
         acceptAllCookies();
 
