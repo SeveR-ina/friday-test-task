@@ -1,4 +1,4 @@
-Java test framework with Java 11 + TestNG + PageObject + Lombok + Maven.
+Java test framework with Java 11 + TestNG + PageObject + Lombok + Maven + Allure report.
 
 Solution is in the Master branch.
 
