@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
-<suite name="Linear headless tests">
+<suite name="Linear tests">
     <test name="SalesFunnelTestForChrome">
         <parameter name="browser" value="Chrome"/>
         <parameter name="headless" value="false"/>

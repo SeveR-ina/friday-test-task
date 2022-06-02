@@ -17,4 +17,13 @@ public class Car {
     private String ps;
     private String tsnHsn;
     private String regDate;
+
+    @Override
+    public String toString() {
+        return "Car{" +
+                "brand='" + brand + '\'' +
+                ", model='" + model + '\'' +
+                ", tsnHsn='" + tsnHsn + '\'' +
+                '}';
+    }
 }

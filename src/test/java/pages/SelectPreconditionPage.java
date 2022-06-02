@@ -14,7 +14,7 @@ public class SelectPreconditionPage extends BasePage {
     private WebElement submitButton;
 
     @FindAll({@FindBy(className = "css-16lh4m5")})
-    private List<WebElement> radioButtons;
+    private List<WebElement> insuranceStateRButton;
 
     public SelectPreconditionPage(WebDriver driver) {
         super(driver);
@@ -26,9 +26,9 @@ public class SelectPreconditionPage extends BasePage {
         submitButton.click();
     }
 
-    @Step("Click on radio button with {0} index")
-    public void clickOnRButton(int index) {
-        waitForVisibilityOf(radioButtons.get(0));
-        radioButtons.get(index).click();
+    @Step("Click on insurance state radio button with {0} index")
+    public void clickOnInsuranceStateRadioButton(int index) {
+        waitForVisibilityOf(insuranceStateRButton.get(0));
+        insuranceStateRButton.get(index).click();
     }
 }
