@@ -1,6 +1,7 @@
 package tests;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.asynchttpclient.uri.Uri;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -10,6 +11,7 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.remote.AbstractDriverOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import pages.SelectPreconditionPage;
@@ -18,6 +20,8 @@ import utils.TimeOuts;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +34,7 @@ import java.util.Properties;
 public abstract class BasicTest {
     protected WebDriver driver;
 
+    DesiredCapabilities capabilities;
     protected SelectPreconditionPage preconditionPage;
     private final static String TEST_PROPERTIES_PATH = "./src/test/resources/test.properties";
     private final static String VW_PROPERTIES_PATH = "./src/test/resources/vw.properties";
@@ -47,7 +52,7 @@ public abstract class BasicTest {
      */
     protected void doPreparationsFor(String browser, boolean headless) {
         createAndSetCapabilities(browser);
-        uploadDriverAndInitializeBaseDriver(browser, headless);
+        setDriver(capabilities);
 
         driver.get(testProperties.getProperty("salesFunnelURL"));
         manageDriver();
@@ -98,7 +103,7 @@ public abstract class BasicTest {
      * @param browser can be chosen via parameter and value from testng xml.
      */
     private void createAndSetCapabilities(String browser) {
-        DesiredCapabilities capabilities = new DesiredCapabilities();
+        capabilities = new DesiredCapabilities();
         capabilities.setCapability("browser", browser);
     }
 
@@ -107,30 +112,6 @@ public abstract class BasicTest {
      */
     protected void quitDriver() {
         driver.quit();
-    }
-
-    /**
-     * Uploads driver and, if necessary, adds options to it.
-     * Initializes default driver.
-     *
-     * @param browser  can be chosen via parameter and value from testng xml.
-     * @param headless can be chosen via parameter and value from testng xml.
-     */
-    private void uploadDriverAndInitializeBaseDriver(String browser, boolean headless) {
-        switch (browser) {
-            case "Chrome":
-                uploadChromeDriverAndInitBaseDriver(headless);
-                break;
-            case "FireFox":
-                uploadFireFoxDriverAndInitBaseDriver(headless);
-                break;
-            case "Edge":
-                uploadEdgeDriverAndInitBaseDriver(headless);
-                break;
-            default:
-                System.out.println("Wrong Browser's name");
-                break;
-        }
     }
 
     /**
@@ -143,45 +124,13 @@ public abstract class BasicTest {
         driver.manage().deleteAllCookies();
     }
 
-    /**
-     * Uploads Chrome driver.
-     * If necessary, creates Chrome options.
-     * Initializes default driver.
-     */
-    private void uploadChromeDriverAndInitBaseDriver(boolean headless) {
-        WebDriverManager.chromedriver().setup();
-        ChromeOptions options = new ChromeOptions();
-        if (headless) {
-            options.addArguments("--headless");
+    private void setDriver(DesiredCapabilities capabilities) {
+        String remoteUrl = "http://localhost:4444/wd/hub";
+        try {
+            driver = new RemoteWebDriver(new URL(remoteUrl), capabilities);
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
         }
-        driver = new ChromeDriver(options);
     }
 
-    /**
-     * Uploads Edge driver.
-     * If necessary, creates Edge options.
-     * Initializes default driver.
-     */
-    private void uploadEdgeDriverAndInitBaseDriver(boolean headless) {
-        WebDriverManager.edgedriver().setup();
-        EdgeOptions options = new EdgeOptions();
-        if (headless) {
-            options.addArguments("--headless");
-        }
-        driver = new EdgeDriver(options);
-    }
-
-    /**
-     * Uploads Firefox driver.
-     * If necessary, creates Firefox options.
-     * Initializes default driver.
-     */
-    private void uploadFireFoxDriverAndInitBaseDriver(boolean headless) {
-        WebDriverManager.firefoxdriver().setup();
-        FirefoxOptions options = new FirefoxOptions();
-        if (headless) {
-            options.addArguments("--headless");
-        }
-        driver = new FirefoxDriver(options);
-    }
 }
