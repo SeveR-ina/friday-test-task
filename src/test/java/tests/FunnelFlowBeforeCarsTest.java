@@ -1,7 +1,11 @@
+package tests;
+
+import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import pages.SelectPreconditionPage;
 import pages.SelectRegisteredOwnerPage;
+import utils.listeners.TestListener;
 
 import static org.testng.Assert.assertNotNull;
 
@@ -9,8 +13,9 @@ import static org.testng.Assert.assertNotNull;
  * Test class for checking no matter which radio button is chosen on /selectPrecondition
  * and /selectRegisteredOwner page, user still successfully visit /selectVehicle page.
  */
-@Ignore
-@Test
+@Listeners({TestListener.class})
+@Epic("Regression Tests")
+@Feature("Sales Funnel Tests")
 public class FunnelFlowBeforeCarsTest extends BasicTest {
 
     /**
@@ -48,7 +53,9 @@ public class FunnelFlowBeforeCarsTest extends BasicTest {
     @Test(dataProvider = "objectTestData",
             description = "Test for checking that after choosing some radio buttons," +
                     "user still can see /selectVehicle page.")
-    public void checkSalesFunnelWithVWCars(TestData testData) {
+    @Severity(SeverityLevel.NORMAL)
+    @Story("Check /selectvehicle page by choosing radio buttons on previous pages")
+    public void checkSelectVehiclePageByChoosingRadioButtons(TestData testData) {
         preconditionPage.clickOnRButton(testData.items[0]);
         preconditionPage.submit();
 
@@ -67,7 +74,7 @@ public class FunnelFlowBeforeCarsTest extends BasicTest {
      * Data provider method for providing variants of choosing radio buttons.
      */
     //TODO: re-write code so all combinations go through test
-    @DataProvider(name = "objectTestData")
+    @DataProvider(name = "checkSelectVehiclePageByChoosingRadioButtons")
     public static Object[][] objectTestData() {
         return new Object[][]{
                 {new TestData(0, 0, 0)},

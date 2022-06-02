@@ -1,3 +1,5 @@
+package tests;
+
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -25,7 +27,7 @@ import java.util.Properties;
  * Basic class for all tests: creates driver instances,
  * works with properties and capabilities, manages drivers.
  */
-abstract class BasicTest {
+public abstract class BasicTest {
     protected WebDriver driver;
 
     protected SelectPreconditionPage preconditionPage;
@@ -49,6 +51,10 @@ abstract class BasicTest {
 
         driver.get(testProperties.getProperty("salesFunnelURL"));
         manageDriver();
+    }
+
+    public WebDriver getDriver() {
+        return driver;
     }
 
     /**

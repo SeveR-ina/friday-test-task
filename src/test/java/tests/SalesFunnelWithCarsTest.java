@@ -1,8 +1,12 @@
+package tests;
+
+import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import org.testng.annotations.BeforeTest;
 import pages.*;
 import testData.Car;
+import utils.listeners.TestListener;
 
 import static org.testng.Assert.assertNotNull;
 
@@ -10,7 +14,9 @@ import static org.testng.Assert.assertNotNull;
  * Main test class with checking FRIDAY's sales funnel.
  * Picking 3 car brands and 3 models for each and every brand.
  */
-@Test
+@Listeners({TestListener.class})
+@Epic("Regression Tests")
+@Feature("Sales Funnel Tests")
 public class SalesFunnelWithCarsTest extends SalesFunnelBaseTest {
 
     /**
@@ -46,6 +52,8 @@ public class SalesFunnelWithCarsTest extends SalesFunnelBaseTest {
 
     @Test(dataProvider = "createVWCars",
             description = "Checking VW cars with 3 models until entering birthday")
+    @Severity(SeverityLevel.CRITICAL)
+    @Story("Check Sales Funnel by selecting VW car")
     public void checkSalesFunnelWithVWCars(Car car) {
         openCarList();
 
@@ -73,6 +81,8 @@ public class SalesFunnelWithCarsTest extends SalesFunnelBaseTest {
 
     @Test(dataProvider = "createBMWCars",
             description = "Checking BMW cars with 3 models until entering birthday")
+    @Severity(SeverityLevel.CRITICAL)
+    @Story("Check Sales Funnel by selecting BMW car")
     public void checkSalesFunnelWithBMWCars(Car car) {
         openCarList();
 
@@ -102,6 +112,8 @@ public class SalesFunnelWithCarsTest extends SalesFunnelBaseTest {
 
     @Test(dataProvider = "createOpelCars",
             description = "Checking Opel cars with 3 models until entering birthday")
+    @Severity(SeverityLevel.CRITICAL)
+    @Story("Check Sales Funnel by selecting Opel car")
     public void checkSalesFunnelWithOpelCars(Car car) {
 
         openCarList();

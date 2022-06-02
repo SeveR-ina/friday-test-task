@@ -1,5 +1,6 @@
 package pages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -13,10 +14,12 @@ public class SelectEnginePage extends BasePage {
         super(driver);
     }
 
+    @Step("Select car with {0}")
     public void selectHsnTsn(String hsnTsn) {
         driver.findElement(By.xpath("//p[contains(text(), '" + hsnTsn + "')]")).click();
     }
 
+    @Step("Get car's HSN/TSN")
     public String getHsnTsnText() {
         waitForVisibilityOf(hsnTsnElement);
         return hsnTsnElement.getText();

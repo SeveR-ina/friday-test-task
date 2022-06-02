@@ -5,8 +5,8 @@
         <parameter name="browser" value="Chrome"/>
         <parameter name="headless" value="false"/>
         <classes>
-            <class name="SalesFunnelWithCarsTest"/>
-            <class name="FunnelFlowBeforeCarsTest"/>
+            <class name="tests.SalesFunnelWithCarsTest"/>
+            <class name="tests.FunnelFlowBeforeCarsTest"/>
         </classes>
     </test>
 
@@ -14,8 +14,8 @@
         <parameter name="browser" value="FireFox"/>
         <parameter name="headless" value="false"/>
         <classes>
-            <class name="SalesFunnelWithCarsTest"/>
-            <class name="FunnelFlowBeforeCarsTest"/>
+            <class name="tests.SalesFunnelWithCarsTest"/>
+            <class name="tests.FunnelFlowBeforeCarsTest"/>
         </classes>
     </test>
 
@@ -23,8 +23,8 @@
         <parameter name="browser" value="Edge"/>
         <parameter name="headless" value="false"/>
         <classes>
-            <class name="SalesFunnelWithCarsTest"/>
-            <class name="FunnelFlowBeforeCarsTest"/>
+            <class name="tests.SalesFunnelWithCarsTest"/>
+            <class name="tests.FunnelFlowBeforeCarsTest"/>
         </classes>
     </test>
 </suite>

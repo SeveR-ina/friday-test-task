@@ -1,5 +1,6 @@
 package pages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -14,10 +15,12 @@ public class SelectVehiclePage extends BasePage {
         super(driver);
     }
 
+    @Step("Open car list")
     public void openCarList() {
         openListButton.click();
     }
 
+    @Step("Select car brand: {0}")
     public void selectBrand(String brand) {
         driver.findElement
                         (By.xpath("//div[@class='SingleClickListField__optionGroup--1pULx']" +

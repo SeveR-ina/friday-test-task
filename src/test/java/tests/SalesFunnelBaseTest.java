@@ -1,3 +1,5 @@
+package tests;
+
 import pages.*;
 import testData.Car;
 import utils.TimeOuts;
@@ -5,7 +7,7 @@ import utils.TimeOuts;
 import java.time.Duration;
 
 /**
- * Parent class for SalesFunnelWithCarsTest with base methods.
+ * Parent class for tests.SalesFunnelWithCarsTest with base methods.
  */
 public class SalesFunnelBaseTest extends BasicTest {
 

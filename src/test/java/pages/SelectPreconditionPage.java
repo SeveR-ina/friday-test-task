@@ -1,5 +1,6 @@
 package pages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
@@ -19,11 +20,13 @@ public class SelectPreconditionPage extends BasePage {
         super(driver);
     }
 
+    @Step("Click on submit button")
     public void submit() {
         waitForVisibilityOf(submitButton);
         submitButton.click();
     }
 
+    @Step("Click on radio button with {0} index")
     public void clickOnRButton(int index) {
         waitForVisibilityOf(radioButtons.get(0));
         radioButtons.get(index).click();
