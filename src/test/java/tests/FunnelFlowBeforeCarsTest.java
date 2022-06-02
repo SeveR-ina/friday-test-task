@@ -49,20 +49,19 @@ public class FunnelFlowBeforeCarsTest extends BasicTest {
         quitDriver();
     }
 
-    @Ignore //TODO: has to work differently
     @Test(dataProvider = "objectTestData",
             description = "Test for checking that after choosing some radio buttons," +
                     "user still can see /selectVehicle page.")
     @Severity(SeverityLevel.NORMAL)
     @Story("Check /selectvehicle page by choosing radio buttons on previous pages")
     public void checkSelectVehiclePageByChoosingRadioButtons(TestData testData) {
-        preconditionPage.clickOnRButton(testData.items[0]);
+        preconditionPage.clickOnInsuranceStateRadioButton(testData.insuranceState);
         preconditionPage.submit();
 
         SelectRegisteredOwnerPage registeredOwnerPage = new SelectRegisteredOwnerPage(driver);
 
-        registeredOwnerPage.clickOnRButton(testData.items[1]);
-        registeredOwnerPage.clickOnRButton(testData.items[2]);
+        registeredOwnerPage.clickOnCarRegStateRadioButton(testData.carRegState);
+        registeredOwnerPage.clickOnCarPurchaseStateRadioButton(testData.carPurchaseState);
         registeredOwnerPage.submit();
 
         Assert.assertEquals(driver.getCurrentUrl(),
@@ -73,8 +72,7 @@ public class FunnelFlowBeforeCarsTest extends BasicTest {
     /**
      * Data provider method for providing variants of choosing radio buttons.
      */
-    //TODO: re-write code so all combinations go through test
-    @DataProvider(name = "checkSelectVehiclePageByChoosingRadioButtons")
+    @DataProvider
     public static Object[][] objectTestData() {
         return new Object[][]{
                 {new TestData(0, 0, 0)},
@@ -92,10 +90,23 @@ public class FunnelFlowBeforeCarsTest extends BasicTest {
      * Static class for test data.
      */
     static class TestData {
-        public int[] items;
+        public int insuranceState;
+        public int carRegState;
+        public int carPurchaseState;
 
-        public TestData(int... items) {
-            this.items = items;
+        public TestData(int insuranceState, int carRegState, int carPurchaseState) {
+            this.insuranceState = insuranceState;
+            this.carRegState = carRegState;
+            this.carPurchaseState = carPurchaseState;
+        }
+
+        @Override
+        public String toString() {
+            return "TestData{" +
+                    "insuranceState=" + (insuranceState + 1) + "th option" +
+                    ", carRegState=" + (carRegState + 1) + "th option" +
+                    ", carPurchaseState=" + (carPurchaseState + 1) + "th option" +
+                    '}';
         }
     }
 }
