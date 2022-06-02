@@ -3,6 +3,9 @@ package testData;
 import lombok.Builder;
 import lombok.Getter;
 
+/**
+ * Test data class
+ */
 @Getter
 @Builder
 public class Car {

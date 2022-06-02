@@ -6,16 +6,28 @@ import testData.Car;
 
 import static org.testng.Assert.assertNotNull;
 
+/**
+ * Main test class with checking FRIDAY's sales funnel.
+ * Picking 3 car brands and 3 models for each and every brand.
+ */
 @Test
 public class SalesFunnelWithCarsTest extends SalesFunnelBaseTest {
 
+    /**
+     * Sets and loads test properties.
+     */
     @BeforeTest
     public void doBeforeTest() {
-        setProperties();
-        System.out.println("fff");
+        initializeProperties();
         loadPropertiesFromFile();
     }
 
+    /**
+     * Opens Browser, goes to start URL, accepts cookies, asserts that start page is not null.
+     *
+     * @param browser  can be chosen via parameter and value from testng xml.
+     * @param headless can be chosen via parameter and value from testng xml.
+     */
     @Parameters({"browser", "headless"})
     @BeforeMethod
     public void doBeforeMethod(String browser, boolean headless) {
@@ -32,7 +44,8 @@ public class SalesFunnelWithCarsTest extends SalesFunnelBaseTest {
         quitDriver();
     }
 
-    @Test(dataProvider = "createVWCars")
+    @Test(dataProvider = "createVWCars",
+            description = "Checking VW cars with 3 models until entering birthday")
     public void checkSalesFunnelWithVWCars(Car car) {
         openCarList();
 
@@ -47,16 +60,19 @@ public class SalesFunnelWithCarsTest extends SalesFunnelBaseTest {
         selectEP(car, "Passat");
 
         SelectEnginePage enginePage = new SelectEnginePage(driver);
-        Assert.assertEquals(enginePage.getHsnTsnText(), car.getTsnHsn(), "Actual HSN/TSN != Expected one");
+        Assert.assertEquals(enginePage.getHsnTsnText(), car.getTsnHsn(),
+                "Actual HSN/TSN != Expected one");
         enginePage.selectHsnTsn(car.getTsnHsn());
 
         enterRegDate(car);
 
         Assert.assertEquals(driver.getCurrentUrl(),
-                testProperties.getProperty("birthDateURL"), "Actual page url != birth date url");
+                testProperties.getProperty("birthDateURL"),
+                "Actual page url != birth date url");
     }
 
-    @Test(dataProvider = "createBMWCars")
+    @Test(dataProvider = "createBMWCars",
+            description = "Checking BMW cars with 3 models until entering birthday")
     public void checkSalesFunnelWithBMWCars(Car car) {
         openCarList();
 
@@ -73,16 +89,19 @@ public class SalesFunnelWithCarsTest extends SalesFunnelBaseTest {
         selectEP(car, "X1");
 
         SelectEnginePage enginePage = new SelectEnginePage(driver);
-        Assert.assertEquals(enginePage.getHsnTsnText(), car.getTsnHsn(), "Actual HSN/TSN != Expected one");
+        Assert.assertEquals(enginePage.getHsnTsnText(), car.getTsnHsn(),
+                "Actual HSN/TSN != Expected one");
         enginePage.selectHsnTsn(car.getTsnHsn());
 
         enterRegDate(car);
 
         Assert.assertEquals(driver.getCurrentUrl(),
-                testProperties.getProperty("birthDateURL"), "Actual page url != birth date url");
+                testProperties.getProperty("birthDateURL"),
+                "Actual page url != birth date url");
     }
 
-    @Test(dataProvider = "createOpelCars")
+    @Test(dataProvider = "createOpelCars",
+            description = "Checking Opel cars with 3 models until entering birthday")
     public void checkSalesFunnelWithOpelCars(Car car) {
 
         openCarList();
@@ -105,15 +124,20 @@ public class SalesFunnelWithCarsTest extends SalesFunnelBaseTest {
         }
 
         SelectEnginePage enginePage = new SelectEnginePage(driver);
-        Assert.assertEquals(enginePage.getHsnTsnText(), car.getTsnHsn(), "Actual HSN/TSN != Expected one");
+        Assert.assertEquals(enginePage.getHsnTsnText(), car.getTsnHsn(),
+                "Actual HSN/TSN != Expected one");
         enginePage.selectHsnTsn(car.getTsnHsn());
 
         enterRegDate(car);
 
         Assert.assertEquals(driver.getCurrentUrl(),
-                testProperties.getProperty("birthDateURL"), "Actual page url != birth date url");
+                testProperties.getProperty("birthDateURL"),
+                "Actual page url != birth date url");
     }
 
+    /**
+     * Data provider method for providing different test data for Opel
+     */
     @DataProvider
     public Object[][] createOpelCars() {
 
@@ -145,6 +169,9 @@ public class SalesFunnelWithCarsTest extends SalesFunnelBaseTest {
         return new Object[][]{{corsa}, {insignia}, {meriva}};
     }
 
+    /**
+     * Data provider method for providing different test data for BMW
+     */
     @DataProvider
     public Object[][] createBMWCars() {
 
@@ -178,6 +205,9 @@ public class SalesFunnelWithCarsTest extends SalesFunnelBaseTest {
         return new Object[][]{{x1}, {x3}, {oneEr}};
     }
 
+    /**
+     * Data provider method for providing different test data for VW
+     */
     @DataProvider
     public Object[][] createVWCars() {
 

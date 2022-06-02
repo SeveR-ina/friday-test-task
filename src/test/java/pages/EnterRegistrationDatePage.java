@@ -15,7 +15,7 @@ public class EnterRegistrationDatePage extends BasePage {
         super(driver);
     }
 
-    public void fillInInput(String date) {
+    public void enter(String date) {
         monthYearInput.sendKeys(date);
     }
 

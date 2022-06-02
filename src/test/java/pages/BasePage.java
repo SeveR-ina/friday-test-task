@@ -9,7 +9,9 @@ import utils.TimeOuts;
 
 import java.time.Duration;
 
-
+/**
+ * Parent page for all pages includes initing elements on the page and waiting for elements.
+ */
 abstract class BasePage {
     protected WebDriver driver;
 
@@ -18,6 +20,9 @@ abstract class BasePage {
         PageFactory.initElements(driver, this);
     }
 
+    /**
+     * Waits for visibility of the page element for default time.
+     */
     public void waitForVisibilityOf(WebElement webElement) {
         new WebDriverWait(driver, Duration.ofSeconds(TimeOuts.DEFAULT_TIMEOUT_IN_SECONDS.
                 getTimeOutValue())).until(ExpectedConditions.visibilityOf(webElement));

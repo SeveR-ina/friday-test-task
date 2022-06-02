@@ -21,6 +21,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+/**
+ * Basic class for all tests: creates driver instances,
+ * works with properties and capabilities, manages drivers.
+ */
 abstract class BasicTest {
     protected WebDriver driver;
 
@@ -34,14 +38,22 @@ abstract class BasicTest {
     protected Properties opelProperties;
     protected Properties bmwProperties;
 
+    /**
+     * Sets capabilities for browsers.
+     * Creates instances of drivers.
+     * Opens browser with start URL, maximizes the window, and deletes all cookies.
+     */
     protected void doPreparationsFor(String browser, boolean headless) {
-        setCapabilities(browser);
-        openBrowser(browser, headless);
+        createAndSetCapabilities(browser);
+        uploadDriverAndInitializeBaseDriver(browser, headless);
 
         driver.get(testProperties.getProperty("salesFunnelURL"));
         manageDriver();
     }
 
+    /**
+     * Accepts all cookies for further testing.
+     */
     protected void acceptAllCookies() {
         WebElement parentShadowElement = driver.findElement(By.id("usercentrics-root"));
         Map<String, Object> params = new HashMap<>();
@@ -50,13 +62,19 @@ abstract class BasicTest {
         ShadowDomUtils.clickElementShadowDOM(((RemoteWebDriver) driver), params);
     }
 
-    protected void setProperties() {
+    /**
+     * Creates and initializes properties.
+     */
+    protected void initializeProperties() {
         testProperties = new Properties();
         vwProperties = new Properties();
         opelProperties = new Properties();
         bmwProperties = new Properties();
     }
 
+    /**
+     * Loads/Reads all properties.
+     */
     protected void loadPropertiesFromFile() {
         try {
             testProperties.load(new FileInputStream(TEST_PROPERTIES_PATH));
@@ -68,25 +86,40 @@ abstract class BasicTest {
         }
     }
 
-    private void setCapabilities(String browser) {
+    /**
+     * Creates and sets capabilities for browser.
+     *
+     * @param browser can be chosen via parameter and value from testng xml.
+     */
+    private void createAndSetCapabilities(String browser) {
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("browser", browser);
     }
 
-    public void quitDriver() {
+    /**
+     * Quits this driver and closes its window.
+     */
+    protected void quitDriver() {
         driver.quit();
     }
 
-    private void openBrowser(String browser, boolean headless) {
+    /**
+     * Uploads driver and, if necessary, adds options to it.
+     * Initializes default driver.
+     *
+     * @param browser  can be chosen via parameter and value from testng xml.
+     * @param headless can be chosen via parameter and value from testng xml.
+     */
+    private void uploadDriverAndInitializeBaseDriver(String browser, boolean headless) {
         switch (browser) {
             case "Chrome":
-                openChrome(headless);
+                uploadChromeDriverAndInitBaseDriver(headless);
                 break;
             case "FireFox":
-                openFireFox(headless);
+                uploadFireFoxDriverAndInitBaseDriver(headless);
                 break;
             case "Edge":
-                openEdge(headless);
+                uploadEdgeDriverAndInitBaseDriver(headless);
                 break;
             default:
                 System.out.println("Wrong Browser's name");
@@ -94,6 +127,9 @@ abstract class BasicTest {
         }
     }
 
+    /**
+     * Maximizes the window, waits, and deletes cookies.
+     */
     private void manageDriver() {
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(
@@ -101,7 +137,12 @@ abstract class BasicTest {
         driver.manage().deleteAllCookies();
     }
 
-    private void openChrome(boolean headless) {
+    /**
+     * Uploads Chrome driver.
+     * If necessary, creates Chrome options.
+     * Initializes default driver.
+     */
+    private void uploadChromeDriverAndInitBaseDriver(boolean headless) {
         WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
         if (headless) {
@@ -110,7 +151,12 @@ abstract class BasicTest {
         driver = new ChromeDriver(options);
     }
 
-    private void openEdge(boolean headless) {
+    /**
+     * Uploads Edge driver.
+     * If necessary, creates Edge options.
+     * Initializes default driver.
+     */
+    private void uploadEdgeDriverAndInitBaseDriver(boolean headless) {
         WebDriverManager.edgedriver().setup();
         EdgeOptions options = new EdgeOptions();
         if (headless) {
@@ -119,7 +165,12 @@ abstract class BasicTest {
         driver = new EdgeDriver(options);
     }
 
-    private void openFireFox(boolean headless) {
+    /**
+     * Uploads Firefox driver.
+     * If necessary, creates Firefox options.
+     * Initializes default driver.
+     */
+    private void uploadFireFoxDriverAndInitBaseDriver(boolean headless) {
         WebDriverManager.firefoxdriver().setup();
         FirefoxOptions options = new FirefoxOptions();
         if (headless) {

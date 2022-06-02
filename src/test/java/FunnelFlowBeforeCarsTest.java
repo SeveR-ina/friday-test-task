@@ -5,16 +5,29 @@ import pages.SelectRegisteredOwnerPage;
 
 import static org.testng.Assert.assertNotNull;
 
+/**
+ * Test class for checking no matter which radio button is chosen on /selectPrecondition
+ * and /selectRegisteredOwner page, user still successfully visit /selectVehicle page.
+ */
 @Ignore
 @Test
 public class FunnelFlowBeforeCarsTest extends BasicTest {
 
+    /**
+     * Sets and loads test properties.
+     */
     @BeforeTest
     public void doBeforeTest() {
-        setProperties();
+        initializeProperties();
         loadPropertiesFromFile();
     }
 
+    /**
+     * Opens Browser, goes to start URL, accepts cookies, asserts that start page is not null.
+     *
+     * @param browser  can be chosen via parameter and value from testng xml.
+     * @param headless can be chosen via parameter and value from testng xml.
+     */
     @Parameters({"browser", "headless"})
     @BeforeMethod
     public void doBeforeMethod(String browser, boolean headless) {
@@ -32,7 +45,9 @@ public class FunnelFlowBeforeCarsTest extends BasicTest {
     }
 
     @Ignore //TODO: has to work differently
-    @Test(dataProvider = "objectTestData")
+    @Test(dataProvider = "objectTestData",
+            description = "Test for checking that after choosing some radio buttons," +
+                    "user still can see /selectVehicle page.")
     public void checkSalesFunnelWithVWCars(TestData testData) {
         preconditionPage.clickOnRButton(testData.items[0]);
         preconditionPage.submit();
@@ -44,9 +59,13 @@ public class FunnelFlowBeforeCarsTest extends BasicTest {
         registeredOwnerPage.submit();
 
         Assert.assertEquals(driver.getCurrentUrl(),
-                testProperties.getProperty("vehiclePageURL"), "Actual page url != select vehicle page url");
+                testProperties.getProperty("vehiclePageURL"),
+                "Actual page url != select vehicle page url");
     }
 
+    /**
+     * Data provider method for providing variants of choosing radio buttons.
+     */
     //TODO: re-write code so all combinations go through test
     @DataProvider(name = "objectTestData")
     public static Object[][] objectTestData() {
@@ -62,6 +81,9 @@ public class FunnelFlowBeforeCarsTest extends BasicTest {
         };
     }
 
+    /**
+     * Static class for test data.
+     */
     static class TestData {
         public int[] items;
 
