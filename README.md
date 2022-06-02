@@ -4,7 +4,8 @@ Solution is in the Master branch.
 
 Test classes :
 
-- SalesFunnelWithCarsTest.class.
+- SalesFunnelWithCarsTest;
+- FunnelFlowBeforeCarsTest.
 
 Linear tests :
 
